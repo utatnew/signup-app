@@ -1,0 +1,28 @@
+.signup-form {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.signup-form label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.signup-form input[type="text"],
+.signup-form input[type="email"],
+.signup-form input[type="password"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+}
+
+.signup-form .error-message {
+    color: red;
+    margin-top: 5px;
+}
+
+.signup-form button[type="submit"] {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+}
