@@ -23,7 +23,7 @@ export class SignUpFormComponent implements OnInit {
               private signUpService: SignUpService) {
     this.signupForm = {} as FormGroup;
   }
-  
+
   ngOnInit() {
     this.signupForm = this.fb.group({
       firstName: ['', Validators.required],
