@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup, Validators
+import {
+  AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators
 } from '@angular/forms';
 import {HttpClient} from "@angular/common/http";
 import {catchError, throwError} from "rxjs";
@@ -22,17 +23,14 @@ export class SignUpFormComponent implements OnInit {
               private signUpService: SignUpService) {
     this.signupForm = {} as FormGroup;
   }
-
-  // TODO: better check on email and add checks for passwords regarding upper and lower case and firstname
-  //  and lastname shpuld not be in password
+  
   ngOnInit() {
     this.signupForm = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(8)]]
+      password: ['', [Validators.required, Validators.minLength(8), this.passwordValidator()]]
     });
-
   }
 
   onSubmit() {
@@ -55,6 +53,28 @@ export class SignUpFormComponent implements OnInit {
   showPwdError() {
     const passwordControl = this.signupForm.get('password');
     return passwordControl?.invalid && passwordControl?.touched;
+  }
+
+  passwordValidator(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      const password = control.value;
+      const firstName = control.root.get('firstName')?.value;
+      const lastName = control.root.get('lastName')?.value;
+
+      if (
+          password &&
+          password.length >= 8 &&
+          /[a-z]/.test(password) &&
+          /[A-Z]/.test(password) &&
+          !password.includes(firstName) &&
+          !password.includes(lastName)
+      ) {
+        return null; // Valid password
+      } else {
+        return { passwordInvalid: true }; // Invalid password
+      }
+
+    };
   }
 
 }
