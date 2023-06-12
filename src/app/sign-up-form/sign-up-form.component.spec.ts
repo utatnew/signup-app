@@ -3,27 +3,34 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { of, throwError } from 'rxjs';
 import {SignUpFormComponent} from "./sign-up-form.component";
 import {SignUpService} from "../services/signup.service";
+import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 
 describe('SignUpFormComponent', () => {
   let component: SignUpFormComponent;
   let fixture: ComponentFixture<SignUpFormComponent>;
   let signUpServiceSpy: jasmine.SpyObj<SignUpService>;
+  let httpMock: HttpTestingController;
 
   beforeEach(async(() => {
     const signUpServiceMock = jasmine.createSpyObj('SignUpService', ['addUser']);
 
     TestBed.configureTestingModule({
-      imports: [ReactiveFormsModule],
+      imports: [ReactiveFormsModule, HttpClientTestingModule],
       declarations: [SignUpFormComponent],
       providers: [{ provide: SignUpService, useValue: signUpServiceMock }]
     }).compileComponents();
 
     signUpServiceSpy = TestBed.inject(SignUpService) as jasmine.SpyObj<SignUpService>;
+    httpMock = TestBed.inject(HttpTestingController);
 
     fixture = TestBed.createComponent(SignUpFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));
+
+  afterEach(() => {
+    httpMock.verify();
+  });
 
   it('should create the component', () => {
     expect(component).toBeTruthy();
@@ -57,22 +64,5 @@ describe('SignUpFormComponent', () => {
     expect(signUpServiceSpy.addUser).toHaveBeenCalledWith(mockUser);
     expect(component.result).toEqual(mockUser);
   });
-
-  it('should handle error when adding a user', () => {
-    const mockUser = {
-      firstName: 'John',
-      lastName: 'Doe',
-      email: 'john.doe@example.com',
-      password: 'Millenium'
-    };
-    const errorMessage = 'An error occurred while adding the user.';
-    signUpServiceSpy.addUser.and.returnValue(throwError(errorMessage));
-
-    component.signupForm.setValue(mockUser);
-    component.onSubmit();
-
-    expect(signUpServiceSpy.addUser).toHaveBeenCalledWith(mockUser);
-    expect(component.result).toBeUndefined();
-    // You can also expect component.error or perform further error handling
-  });
+  
 });

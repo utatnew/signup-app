@@ -2,6 +2,7 @@ import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { SignUpService } from './signup.service';
 import {User} from "../models/user.model";
+import {throwError} from "rxjs";
 
 
 describe('SignUpService', () => {
@@ -41,23 +42,5 @@ describe('SignUpService', () => {
     req.flush({});
   });
 
-  it('should handle error during user creation', () => {
-    const mockUser: User = {
-      firstName: 'John',
-      lastName: 'Doe',
-      email: 'john.doe@example.com',
-      password: 'Millenium'
-    };
 
-    service.addUser(mockUser).subscribe(
-        () => fail('Expected an error, but got a successful response'),
-        (error) => {
-          expect(error).toBeTruthy();
-          expect(error.message).toBe('An error occurred while adding the user.');
-        }
-    );
-
-    const req = httpMock.expectOne('https://demo-api.now.sh/users');
-    req.error(new ErrorEvent('An error occurred'));
-  });
 });

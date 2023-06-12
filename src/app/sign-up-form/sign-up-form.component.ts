@@ -23,6 +23,8 @@ export class SignUpFormComponent implements OnInit {
     this.signupForm = {} as FormGroup;
   }
 
+  // TODO: better check on email and add checks for passwords regarding upper and lower case and firstname
+  //  and lastname shpuld not be in password
   ngOnInit() {
     this.signupForm = this.fb.group({
       firstName: ['', Validators.required],
