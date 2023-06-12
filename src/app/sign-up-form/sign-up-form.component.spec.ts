@@ -64,5 +64,5 @@ describe('SignUpFormComponent', () => {
     expect(signUpServiceSpy.addUser).toHaveBeenCalledWith(mockUser);
     expect(component.result).toEqual(mockUser);
   });
-  
+
 });
