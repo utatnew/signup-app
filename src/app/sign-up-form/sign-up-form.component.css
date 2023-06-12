@@ -1,6 +1,8 @@
 .signup-form {
     max-width: 400px;
     margin: 0 auto;
+    font-family: Arial;
+    font-size: 16px;
 }
 
 .signup-form label {
@@ -14,6 +16,7 @@
     width: 100%;
     padding: 8px;
     margin-bottom: 10px;
+    border-radius: 4px;
 }
 
 .signup-form .error-message {
@@ -22,7 +25,8 @@
 }
 
 .signup-form button[type="submit"] {
+    margin-top: 10px;
     padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
+    background-color: #4caf50;
+    color: #fff;
 }
